@@ -1,12 +1,14 @@
+import { CustomPagination } from "@/components/custom/CustomPagination";
 import { Button } from "@/components/ui/button";
+import { CustomJumbotron } from "@/shop/components/CustomJumbotron";
 
 export const HomePage = () => {
   return (
     <div>
-      <h1 className="font-monserrat font-thin">Hola Mundo</h1>
-      <h1 className="font-monserrat font-normal">Hola Mundo</h1>
-      <h1 className="font-monserrat font-bold">Hola Mundo</h1>
+      <CustomJumbotron tittle="Todos los productos" />
       <Button>Hola soy un boton</Button>
+
+      <CustomPagination totalPages={7} />
     </div>
   );
 };
