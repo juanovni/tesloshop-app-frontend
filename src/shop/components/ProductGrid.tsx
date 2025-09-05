@@ -1,10 +1,10 @@
+import { useSearchParams } from "react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Filter, Grid, List } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { FilterSidebar } from "./FilterSidebar";
-import { useSearchParams } from "react-router";
-import type { Product } from "@/mocks/products.mock";
+import type { Product } from "@/interfaces/product.interface";
 
 interface Props {
   products: Product[];
@@ -12,7 +12,7 @@ interface Props {
 
 export const ProductGrid = ({ products }: Props) => {
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
   const viewMode = searchParams.get("viewMode") || "grid";
   const handleViewModeChange = (mode: "grid" | "list") => {
@@ -102,10 +102,10 @@ export const ProductGrid = ({ products }: Props) => {
                 <ProductCard
                   key={product.id}
                   id={product.id}
-                  name={product.name}
+                  name={product.title}
                   price={product.price}
-                  image={product.image}
-                  category={product.category}
+                  image={product.images[0]}
+                  category={product.gender}
                 />
               ))}
             </div>
