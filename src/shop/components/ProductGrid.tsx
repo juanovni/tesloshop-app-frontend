@@ -101,11 +101,11 @@ export const ProductGrid = ({ products }: Props) => {
               {products.map((product) => (
                 <ProductCard
                   key={product.id}
-                  id={product.id}
                   name={product.title}
                   price={product.price}
                   image={product.images[0]}
                   category={product.gender}
+                  sizes={product.sizes}
                 />
               ))}
             </div>
