@@ -1,4 +1,4 @@
-import { tesloApi } from "@/api/tesloApi";
+import { BASE_URL, tesloApi } from "@/api/tesloApi";
 import type { Product } from "@/interfaces/product.interface";
 
 export const getProductByIdAction = async (id: string): Promise<Product> => {
@@ -23,7 +23,7 @@ export const getProductByIdAction = async (id: string): Promise<Product> => {
 
   const images = data.images.map((image) => {
     if (image.includes("http")) return image;
-    return `${import.meta.env.VITE_API_URL}/files/product/${image}`;
+    return `${BASE_URL}/api/files/product/${image}`;
   });
 
   return {
