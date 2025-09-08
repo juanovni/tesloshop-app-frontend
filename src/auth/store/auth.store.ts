@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { User } from "@/interfaces/user.inerface";
 import { loginAction } from "../actions/login.action";
 import { checkAuthAction } from "../actions/check-auth.action";
+import { registerAction } from "../actions/register.action";
 
 type AuthStatus = "authenticated" | "not-authenticated" | "checking"; // Mejor logica para saber el estado inicial del usuario
 
@@ -17,6 +18,11 @@ type AuthStore = {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   checkAuthStatus: () => Promise<boolean>;
+  register: (
+    email: string,
+    password: string,
+    fullName: string
+  ) => Promise<boolean>;
 };
 
 export const useAuthStore = create<AuthStore>()((set, get) => ({
@@ -59,6 +65,25 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   checkAuthStatus: async () => {
     try {
       const { user, token } = await checkAuthAction();
+      localStorage.setItem("token", token);
+      set({ user, token, authStatus: "authenticated" });
+
+      return true;
+    } catch (error) {
+      localStorage.removeItem("token");
+      set({
+        user: undefined,
+        token: undefined,
+        authStatus: "not-authenticated",
+      });
+
+      return false;
+    }
+  },
+
+  register: async (email: string, password: string, fullName: string) => {
+    try {
+      const { user, token } = await registerAction(email, password, fullName);
       localStorage.setItem("token", token);
       set({ user, token, authStatus: "authenticated" });
 
