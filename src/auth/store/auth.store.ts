@@ -6,11 +6,12 @@ import { checkAuthAction } from "../actions/check-auth.action";
 type AuthStatus = "authenticated" | "not-authenticated" | "checking"; // Mejor logica para saber el estado inicial del usuario
 
 type AuthStore = {
-  //
+  // Props
   user: User | null;
   token: string | null;
   authStatus: AuthStatus;
   // Getters
+  isAdmin: () => boolean;
 
   // Actions
   login: (email: string, password: string) => Promise<boolean>;
@@ -18,11 +19,19 @@ type AuthStore = {
   checkAuthStatus: () => Promise<boolean>;
 };
 
-export const useAuthStore = create<AuthStore>()((set) => ({
+export const useAuthStore = create<AuthStore>()((set, get) => ({
   user: null,
+  // Props
   token: null,
   authStatus: "checking", // Un estado inicial
 
+  // Getters
+  isAdmin() {
+    const roles = get().user?.roles || [];
+    return roles?.includes("admin");
+  },
+
+  // Actions
   login: async (email: string, password: string) => {
     try {
       const data = await loginAction(email, password);
