@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { User } from "@/interfaces/user.inerface";
 import { loginAction } from "../actions/login.action";
+import { checkAuthAction } from "../actions/check-auth.action";
 
 type AuthStatus = "authenticated" | "not-authenticated" | "checking"; // Mejor logica para saber el estado inicial del usuario
 
@@ -14,24 +15,28 @@ type AuthStore = {
   // Actions
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  checkAuthStatus: () => Promise<boolean>;
 };
 
 export const useAuthStore = create<AuthStore>()((set) => ({
   user: null,
   token: null,
-  authStatus: "checking", // Un estado inicial 
+  authStatus: "checking", // Un estado inicial
 
   login: async (email: string, password: string) => {
-    console.log({ email, password });
     try {
       const data = await loginAction(email, password);
       localStorage.setItem("token", data.token);
-      set({ user: data.user, token: data.token });
+      set({ user: data.user, token: data.token, authStatus: "authenticated" });
 
       return true;
     } catch (error) {
-      console.log(error);
       localStorage.removeItem("token");
+      set({
+        user: undefined,
+        token: undefined,
+        authStatus: "not-authenticated",
+      });
 
       return false;
     }
@@ -39,6 +44,25 @@ export const useAuthStore = create<AuthStore>()((set) => ({
 
   logout: () => {
     localStorage.removeItem("token");
-    set({ user: undefined, token: undefined });
+    set({ user: null, token: null, authStatus: "not-authenticated" });
+  },
+
+  checkAuthStatus: async () => {
+    try {
+      const { user, token } = await checkAuthAction();
+      localStorage.setItem("token", token);
+      set({ user, token, authStatus: "authenticated" });
+
+      return true;
+    } catch (error) {
+      localStorage.removeItem("token");
+      set({
+        user: undefined,
+        token: undefined,
+        authStatus: "not-authenticated",
+      });
+
+      return false;
+    }
   },
 }));

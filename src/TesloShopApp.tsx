@@ -1,6 +1,7 @@
+import type { PropsWithChildren } from "react";
 import { RouterProvider } from "react-router";
 import { appRouter } from "./app.router";
-
+import { Toaster } from "sonner";
 import {
   QueryClient,
   QueryClientProvider,
@@ -8,17 +9,17 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { Toaster } from "sonner";
-import { checkAuthAction } from "./auth/actions/check-auth.action";
-import type { PropsWithChildren } from "react";
 import { CustomFullScreenLoading } from "./components/custom/CustomFullScreenLoading";
+import { useAuthStore } from "./auth/store/auth.store";
 
 const queryClient = new QueryClient();
 
 const CheckAuthProvider = ({ children }: PropsWithChildren) => {
-  const { data, isLoading } = useQuery({
+  const { checkAuthStatus } = useAuthStore();
+
+  const { isLoading } = useQuery({
     queryKey: ["auth"],
-    queryFn: checkAuthAction,
+    queryFn: checkAuthStatus,
     retry: false, // para que no vuelva a hacer el intento de la peticion.
     refetchInterval: 1000 * 60 * 1.5, // Revalidar cada hora y media cuando este usando la app
     refetchOnWindowFocus: true,
