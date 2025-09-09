@@ -11,7 +11,15 @@ export const useProduct = (id: string) => {
     // enabled: !!id
   });
 
+  //  Mutacion
+
+  // Methods
+  const handleSubmitForm = async (productLike: Partial<Product>) => {
+    console.log({ productLike });
+  };
+
   return {
     ...query,
+    handleSubmitForm,
   };
 };
