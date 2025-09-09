@@ -12,12 +12,19 @@ interface Props {
   title: string;
   subTitle: string;
   product: Product;
+  isPending: boolean;
   onSubmit: (productLike: Partial<Product>) => Promise<void>; // El Partial de in interface te dice que algunos atributos no son
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subTitle, product, onSubmit }: Props) => {
+export const ProductForm = ({
+  title,
+  subTitle,
+  product,
+  onSubmit,
+  isPending,
+}: Props) => {
   const labelInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -93,14 +100,14 @@ export const ProductForm = ({ title, subTitle, product, onSubmit }: Props) => {
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subTitle={subTitle} />
         <div className="flex justify-end mb-10 gap-4">
-          <Button variant="outline">
+          <Button variant="outline" type="button">
             <Link to="/admin/products" className="flex items-center gap-2">
               <X className="w-4 h-4" />
               Cancelar
             </Link>
           </Button>
 
-          <Button>
+          <Button disabled={isPending} type="submit">
             <SaveAll className="w-4 h-4" />
             Guardar cambios
           </Button>
