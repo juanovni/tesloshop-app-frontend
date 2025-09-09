@@ -30,6 +30,11 @@ export const ProductForm = ({
 
   const [dragActive, setDragActive] = useState(false);
 
+  // Podemos concatenar otros props al del Product principal
+  interface FormInput extends Product {
+    files?: File[];
+  }
+
   const {
     register,
     handleSubmit,
@@ -37,7 +42,7 @@ export const ProductForm = ({
     setValue,
     watch,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormInput>({
     defaultValues: product,
   });
 
@@ -90,12 +95,24 @@ export const ProductForm = ({
     setDragActive(false);
     const files = e.dataTransfer.files;
     if (!files) return;
+
+    // useForm
+    const currentFiles = getValues("files") || [];
+    setValue("files", [...currentFiles, ...Array.from(files)]);
+    
+    // 2 State
     setFiles((prev) => [...prev, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
+
+    // useForm
+    const currentFiles = getValues("files") || [];
+    setValue("files", [...currentFiles, ...Array.from(files)]);
+
+    // 2 State
     setFiles((prev) => [...prev, ...Array.from(files)]);
   };
 

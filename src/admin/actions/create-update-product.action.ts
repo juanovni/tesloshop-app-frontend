@@ -3,12 +3,13 @@ import type { Product } from "@/interfaces/product.interface";
 import { sleep } from "@/lib/sleep";
 
 export const createUpdateProductAction = async (
-  productLike: Partial<Product>
+  productLike: Partial<Product> & { files?: File[] }
 ): Promise<Product> => {
   await sleep(1500);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, user, images = [], ...rest } = productLike; // Una destructuracion de toda la data rest es todo lo demas
+  const { id, user, images = [], files, ...rest } = productLike; // Una destructuracion de toda la data rest es todo lo demas
 
+  console.log({ files });
   const isCreating = id === "new"; // COn ese id sabemos si el es para craear o actualizar
 
   // Nos aseguramnos que sean number porque asi lor equiere el backend
