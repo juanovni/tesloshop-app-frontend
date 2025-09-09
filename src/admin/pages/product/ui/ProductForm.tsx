@@ -26,6 +26,8 @@ export const ProductForm = ({
   isPending,
 }: Props) => {
   const labelInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([]); // File propio de React
+
   const [dragActive, setDragActive] = useState(false);
 
   const {
@@ -87,12 +89,14 @@ export const ProductForm = ({
     e.stopPropagation();
     setDragActive(false);
     const files = e.dataTransfer.files;
-    console.log(files);
+    if (!files) return;
+    setFiles((prev) => [...prev, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
+    if (!files) return;
+    setFiles((prev) => [...prev, ...Array.from(files)]);
   };
 
   return (
@@ -439,6 +443,31 @@ export const ProductForm = ({
                       <p className="mt-1 text-xs text-slate-600 truncate">
                         {image}
                       </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Loaded Images */}
+              <div
+                className={cn(" mt-6 space-y-3", {
+                  hidden: files.length === 0,
+                })}
+              >
+                <h3 className="text-sm font-medium text-slate-700">
+                  Imágenes cargadas
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {files.map((file, index) => (
+                    <div key={index} className="relative group">
+                      <div className="aspect-square bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center">
+                        <img
+                          key={index}
+                          src={URL.createObjectURL(file)}
+                          alt="Product"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
