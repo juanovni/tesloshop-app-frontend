@@ -1,6 +1,6 @@
 import { Link, useParams, useSearchParams } from "react-router";
-import { useRef, useState, type KeyboardEvent } from "react";
-import { Search, ShoppingBag, Menu } from "lucide-react";
+import { useRef, type KeyboardEvent } from "react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,6 @@ import { useAuthStore } from "@/auth/store/auth.store";
 
 export const CustomHeader = () => {
   const { authStatus, isAdmin, logout } = useAuthStore();
-  const [cartCount, setCartCount] = useState(3);
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";

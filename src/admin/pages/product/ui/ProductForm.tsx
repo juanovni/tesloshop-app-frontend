@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 
@@ -99,7 +99,7 @@ export const ProductForm = ({
     // useForm
     const currentFiles = getValues("files") || [];
     setValue("files", [...currentFiles, ...Array.from(files)]);
-    
+
     // 2 State
     setFiles((prev) => [...prev, ...Array.from(files)]);
   };
@@ -330,11 +330,10 @@ export const ProductForm = ({
                       key={size}
                       onClick={() => addSize(size)}
                       disabled={getValues("sizes").includes(size)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                        selectedSizes.includes(size)
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${selectedSizes.includes(size)
                           ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                           : "bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer"
-                      }`}
+                        }`}
                     >
                       {size}
                     </button>
@@ -406,11 +405,10 @@ export const ProductForm = ({
 
               {/* Drag & Drop Zone */}
               <div
-                className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 ${
-                  dragActive
+                className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 ${dragActive
                     ? "border-blue-400 bg-blue-50"
                     : "border-slate-300 hover:border-slate-400"
-                }`}
+                  }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
@@ -512,19 +510,18 @@ export const ProductForm = ({
                     Inventario
                   </span>
                   <span
-                    className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      currentStock > 5
+                    className={`px-2 py-1 text-xs font-medium rounded-full ${currentStock > 5
                         ? "bg-green-100 text-green-800"
                         : product.stock > 0
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
                   >
                     {currentStock > 5
                       ? "En stock"
                       : currentStock > 0
-                      ? "Bajo stock"
-                      : "Sin stock"}
+                        ? "Bajo stock"
+                        : "Sin stock"}
                   </span>
                 </div>
 
